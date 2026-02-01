@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 /*
@@ -53,7 +54,7 @@ void invert(int A[N][N])
 void moveFromEndToStartSlice(char*** words, int startIdx, int endIdx, bool includeStart) {
 	char** myWords = *words;
 	char* currentWord = myWords[endIdx];
-
+	
 	int stopIdx = includeStart ? startIdx - 1 : startIdx;
 	for (int q = endIdx - 1; q > stopIdx; q--) {
 		myWords[q + 1] = myWords[q];
@@ -83,12 +84,30 @@ void sortWords(char*** words, int size)
 
 movie* searchMovieByCountry(country* c, char* moviesName)
 {
-	return;
+	for (int i = 0; i < c->_moviesSetLen; i++) {
+		movie* currentMovie = c->_moviesSet[i];
+		if (strcmp(currentMovie->_movieName, moviesName) == 0) {
+			return currentMovie;
+		}
+	}
+	return NULL;
 }
 
 int addMovieToCountry(country* c, movie* m)
 {
-	return 0;
+	if (searchMovieByCountry(c, m) != NULL) return 1;
+
+	movie** tempMoviesSet = realloc(c->_moviesSet, (c->_moviesSetLen + 1) * sizeof * tempMoviesSet);
+	if (tempMoviesSet == NULL) {
+		printf("problem with malloc. couldn't add movie to country");
+		return 0;
+	}
+	c->_moviesSet = tempMoviesSet;
+	c->_moviesSet[c->_moviesSetLen] = m;
+	
+	c->_moviesSetLen++;
+
+	return 1;
 }
 
 movie** MoviesNotAllowedToCountry(country* c, movie** moviesPtr, int arrMoviesSize, int* arrSize)
