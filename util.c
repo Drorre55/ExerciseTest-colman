@@ -142,6 +142,7 @@ int AlternateSumRec(int num, int currentAlternateSum, int multiplier) {
 	multiplier *= -1;
 
 	if (remainingDigits == 0) {
+		currentAlternateSum = abs(currentAlternateSum);
 		if (currentAlternateSum >= 10) {
 			return AlternateSumRec(currentAlternateSum, 0, multiplier);
 		}
@@ -163,5 +164,6 @@ int AlternatelySum(int num)
 
 int Is11Div(int num)
 {
-	return 0;
+	if (num < 11) return 0;
+	return AlternatelySum(num) == 0;
 }
