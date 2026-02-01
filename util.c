@@ -112,7 +112,25 @@ int addMovieToCountry(country* c, movie* m)
 
 movie** MoviesNotAllowedToCountry(country* c, movie** moviesPtr, int arrMoviesSize, int* arrSize)
 {
-	return;
+	movie** notAllowedMovies = NULL;
+	*arrSize = 0;
+
+	for (int i = 0; i < arrMoviesSize; i++) {
+		movie* currentMovie = moviesPtr[i];
+
+		if (searchMovieByCountry(c, currentMovie->_movieName) == NULL) {
+			movie** tempNotAllowedMovies = realloc(notAllowedMovies, (*arrSize + 1) * sizeof * tempNotAllowedMovies);
+			if (tempNotAllowedMovies == NULL) {
+				printf("problem with realloc. couldn't get movies not allowed in country");
+				return NULL;
+			}
+			notAllowedMovies = tempNotAllowedMovies;
+
+			notAllowedMovies[*arrSize] = currentMovie;
+			(*arrSize)++;
+		}
+	}
+	return notAllowedMovies;
 }
 
 int AlternatelySum(int num)

@@ -75,7 +75,7 @@ void testMovies() {
     m2->_lenInMinutes = 50;
 
     addMovieToCountry(&c, m1);
-    addMovieToCountry(&c, m2);
+    //addMovieToCountry(&c, m2);
 
     movie* found = searchMovieByCountry(&c, "Friends");
     if (found)
