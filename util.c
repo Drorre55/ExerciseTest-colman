@@ -1,5 +1,8 @@
 #include "util.h"
 #include <math.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
 
 
 /*
@@ -47,8 +50,35 @@ void invert(int A[N][N])
 	}
 }
 
+void moveFromEndToStartSlice(char*** words, int startIdx, int endIdx, bool includeStart) {
+	char** myWords = *words;
+	char* currentWord = myWords[endIdx];
+
+	int stopIdx = includeStart ? startIdx - 1 : startIdx;
+	for (int q = endIdx - 1; q > stopIdx; q--) {
+		myWords[q + 1] = myWords[q];
+	}
+	myWords[stopIdx + 1] = currentWord;
+}
+
 void sortWords(char*** words, int size)
 {
+	char** myWords = *words;
+	for (int i = 1; i < size; i++) {
+		char* currentWord = myWords[i];
+
+		for (int j = i - 1; j >= 0; j--) {
+			char* previousWord = myWords[j];
+
+			if (strcmp(currentWord, previousWord) > 0) {
+				moveFromEndToStartSlice(&myWords, j, i, false);
+				break;
+			}
+			else if (j == 0) {
+				moveFromEndToStartSlice(&myWords, j, i, true);
+			}
+		}
+	}
 }
 
 movie* searchMovieByCountry(country* c, char* moviesName)
