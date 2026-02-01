@@ -133,9 +133,32 @@ movie** MoviesNotAllowedToCountry(country* c, movie** moviesPtr, int arrMoviesSi
 	return notAllowedMovies;
 }
 
+int AlternateSumRec(int num, int currentAlternateSum, int multiplier) {
+	int currentDigit = num % 10;
+
+	currentAlternateSum += multiplier * currentDigit;
+
+	int remainingDigits = num / 10;
+	multiplier *= -1;
+
+	if (remainingDigits == 0) {
+		if (currentAlternateSum >= 10) {
+			return AlternateSumRec(currentAlternateSum, 0, multiplier);
+		}
+		else {
+			return currentAlternateSum;
+		}
+	}
+
+	return AlternateSumRec(remainingDigits, currentAlternateSum, multiplier);
+}
+
 int AlternatelySum(int num)
 {
-	return 0;
+	int currentAlternateSum = 0;
+	int multiplier = 1;
+	
+	return AlternateSumRec(num, currentAlternateSum, multiplier);
 }
 
 int Is11Div(int num)
